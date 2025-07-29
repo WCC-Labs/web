@@ -19,6 +19,7 @@ import {
 const Courses = () => {
   const [activeTab, setActiveTab] = useState('popular')
   const [selectedCourse, setSelectedCourse] = useState(null)
+  const [isMobileTabExpanded, setIsMobileTabExpanded] = useState(false)
 
   // Modern PDF generation function
   const downloadSyllabus = async (course) => {
@@ -1072,11 +1073,11 @@ Note: This curriculum is subject to updates based on industry trends.
   ]
 
   return (
-    <section id="courses" className="py-20 bg-white">
+    <section id="courses" className="py-12 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -1102,15 +1103,170 @@ Note: This curriculum is subject to updates based on industry trends.
           </motion.p>
         </motion.div>
 
-        {/* Course Tabs */}
+        {/* Course Tabs - Mobile Simple View */}
+        <div className="md:hidden mb-8">
+          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Our Popular Courses</h3>
+            
+            {/* Show first 2 courses from active tab */}
+            <div className="space-y-4 mb-4">
+              {courses[activeTab].slice(0, 2).map((course, index) => (
+                <motion.div
+                  key={course.id}
+                  className="bg-gray-50 rounded-lg p-4 border border-gray-100"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.4 }}
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      course.id === 'mern' ? 'bg-blue-100 text-blue-600' :
+                      course.id === 'data-science' ? 'bg-green-100 text-green-600' :
+                      course.id === 'java' ? 'bg-orange-100 text-orange-600' :
+                      course.id === 'digital-marketing' ? 'bg-pink-100 text-pink-600' :
+                      'bg-purple-100 text-purple-600'
+                    }`}>
+                      <course.icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 text-sm mb-1">{course.title}</h4>
+                      <p className="text-gray-600 text-xs mb-2 line-clamp-2">{course.description}</p>
+                      <div className="flex items-center space-x-3 text-xs text-gray-500">
+                        <span className="flex items-center">
+                          <HiClock className="w-3 h-3 mr-1" />
+                          {course.duration}
+                        </span>
+                        <span className="flex items-center">
+                          <HiUsers className="w-3 h-3 mr-1" />
+                          {course.students}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* View All Button */}
+            <motion.button
+              onClick={() => setIsMobileTabExpanded(true)}
+              className="w-full bg-gradient-to-r from-primary-50 to-accent-50 rounded-lg p-3 flex items-center justify-center space-x-2 text-primary-700 font-medium text-sm border border-primary-100 hover:from-primary-100 hover:to-accent-100 transition-colors duration-200"
+              whileTap={{ scale: 0.98 }}
+            >
+              <span>View All Courses</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.button>
+          </div>
+
+          {/* Full Courses Modal */}
+          <AnimatePresence>
+            {isMobileTabExpanded && (
+              <motion.div
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileTabExpanded(false)}
+              >
+                <motion.div
+                  className="bg-white rounded-t-2xl p-6 w-full max-h-[85vh] overflow-y-auto"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "100%" }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900">All Courses</h3>
+                    <button
+                      onClick={() => setIsMobileTabExpanded(false)}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <HiX className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+
+                  {/* Course Categories */}
+                  <div className="space-y-6">
+                    {tabs.map((tab) => (
+                      <div key={tab.id}>
+                        <h4 className="text-md font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                          <span>{tab.name}</span>
+                          <span className="bg-primary-100 text-primary-600 text-xs px-2 py-1 rounded-full">
+                            {tab.count}
+                          </span>
+                        </h4>
+                        <div className="space-y-3">
+                          {courses[tab.id].map((course, index) => (
+                            <motion.div
+                              key={course.id}
+                              className="bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100 transition-colors"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.05, duration: 0.3 }}
+                              onClick={() => {
+                                setSelectedCourse(course)
+                                setIsMobileTabExpanded(false)
+                              }}
+                            >
+                              <div className="flex items-start space-x-3">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                  course.id === 'mern' ? 'bg-blue-100 text-blue-600' :
+                                  course.id === 'data-science' ? 'bg-green-100 text-green-600' :
+                                  course.id === 'java' ? 'bg-orange-100 text-orange-600' :
+                                  course.id === 'digital-marketing' ? 'bg-pink-100 text-pink-600' :
+                                  'bg-purple-100 text-purple-600'
+                                }`}>
+                                  <course.icon className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                  <h5 className="font-semibold text-gray-900 text-sm mb-1">{course.title}</h5>
+                                  <p className="text-gray-600 text-xs mb-2 line-clamp-2">{course.description}</p>
+                                  <div className="flex items-center space-x-3 text-xs text-gray-500">
+                                    <span>{course.duration}</span>
+                                    <span>•</span>
+                                    <span>{course.students} students</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA in Modal */}
+                  <div className="mt-6 pt-4 border-t border-gray-100">
+                    <motion.a
+                      href="#contact"
+                      className="btn btn-primary btn-sm w-full flex items-center justify-center"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsMobileTabExpanded(false)}
+                    >
+                      Enroll Now
+                    </motion.a>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Desktop Tabs */}
         <motion.div 
-          className="flex justify-center mb-12"
+          className="hidden md:flex justify-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          <div className="bg-gray-100 rounded-xl p-2 flex space-x-2">
+          <div className="bg-gray-100 rounded-xl p-2 space-x-2 flex">
             {tabs.map((tab) => (
               <motion.button
                 key={tab.id}
@@ -1120,18 +1276,25 @@ Note: This curriculum is subject to updates based on industry trends.
                     ? 'bg-white text-primary-600 shadow-md'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                {tab.name} ({tab.count})
+                <span className="flex items-center space-x-2">
+                  <span>{tab.name}</span>
+                  <span className="bg-primary-100 text-primary-600 text-xs px-2 py-1 rounded-full">
+                    {tab.count}
+                  </span>
+                </span>
               </motion.button>
             ))}
           </div>
         </motion.div>
 
-        {/* Courses Grid */}
+
+
+        {/* Desktop Grid */}
         <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           layout
         >
           {courses[activeTab].map((course, index) => (
@@ -1245,7 +1408,7 @@ Note: This curriculum is subject to updates based on industry trends.
 
         {/* Call to Action */}
         <motion.div
-          className="text-center mt-16"
+          className="text-center mt-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

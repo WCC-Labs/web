@@ -6,15 +6,15 @@ const Placements = () => {
     { number: '95%', label: 'Placement Rate', color: 'blue' },
     { number: '₹12L', label: 'Highest Package', color: 'green' },
     { number: '₹6.5L', label: 'Average Package', color: 'purple' },
-    { number: '500+', label: 'Hiring Partners', color: 'orange' }
+    { number: '100+', label: 'Hiring Partners', color: 'orange' }
   ]
 
   return (
-    <section id="placements" className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+    <section id="placements" className="py-12 md:py-20 bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -42,7 +42,7 @@ const Placements = () => {
 
         {/* Placement Stats */}
         <motion.div 
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8 md:mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -79,7 +79,7 @@ const Placements = () => {
 
         {/* Success Stories Teaser */}
         <motion.div
-          className="mt-16 bg-white rounded-3xl p-8 md:p-12 shadow-xl"
+          className="mt-8 md:mt-16 bg-white rounded-3xl p-8 md:p-12 shadow-xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -119,7 +119,7 @@ const Placements = () => {
             </div>
             
             <motion.div
-              className="relative"
+              className="relative hidden md:block"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -132,10 +132,10 @@ const Placements = () => {
                     <span>Student:</span>
                     <span className="font-semibold">Naveen Cenrayan</span>
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <span>Company:</span>
                     <span className="font-semibold">Paytech Neo</span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between">
                     <span>Package:</span>
                     <span className="font-semibold">₹10 LPA</span>

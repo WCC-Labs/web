@@ -1,18 +1,20 @@
 
 # WCC Labs - Modern React Website
 
-A modern, responsive React web application for WCC Labs - India's leading technology training platform. Built with cutting-edge technologies and featuring beautiful animations, interactive components, and a mobile-first design.
+A modern, responsive React web application for WCC Labs - India's leading technology training platform. Built with cutting-edge technologies and featuring beautiful animations, interactive components, and an optimized mobile-first design with collapsible content sections.
 
-## 🚀 Features
+## Features
 
 - **Modern Design**: Clean, professional interface with gradient themes and glass morphism effects
-- **Responsive Layout**: Optimized for all devices (mobile, tablet, desktop)
+- **Mobile-First Responsive**: Optimized for all devices with swipeable course carousels and collapsible content sections on mobile
+- **Swipeable Course Display**: Mobile users can swipe left/right through course cards for an intuitive browsing experience
+- **On-Demand Content**: Mobile users can expand sections like features and contact details when needed
 - **Smooth Animations**: Framer Motion powered micro-interactions and page transitions
-- **Interactive Components**: Dynamic course cards, testimonial carousel, and contact forms
+- **Interactive Components**: Dynamic course cards, collapsible information panels, and contact forms
 - **Performance Optimized**: Fast loading with Vite and optimized assets
 - **Accessibility**: Semantic HTML and ARIA compliance
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React 18 with Vite
 - **Styling**: Tailwind CSS with custom design system
@@ -21,7 +23,7 @@ A modern, responsive React web application for WCC Labs - India's leading techno
 - **Lottie Animations**: Lottie React for advanced animations
 - **Build Tool**: Vite for fast development and building
 
-## 📦 Installation
+## Installation
 
 1. **Clone the repository**
    ```bash
@@ -49,7 +51,7 @@ A modern, responsive React web application for WCC Labs - India's leading techno
    npm run preview
    ```
 
-## 🎨 Design System
+## Design System
 
 ### Colors
 - **Primary**: Blue gradient (`primary-50` to `primary-900`)
@@ -66,40 +68,18 @@ A modern, responsive React web application for WCC Labs - India's leading techno
 - **Forms**: Clean inputs with focus states
 - **Animations**: Consistent timing and easing
 
-## 📁 Project Structure
 
-```
-src/
-├── components/
-│   ├── sections/
-│   │   ├── Header.jsx
-│   │   ├── Hero.jsx
-│   │   ├── Features.jsx
-│   │   ├── Courses.jsx
-│   │   ├── Placements.jsx
-│   │   ├── Testimonials.jsx
-│   │   ├── Contact.jsx
-│   │   └── Footer.jsx
-│   └── ui/
-│       └── LottieAnimation.jsx
-├── assets/
-│   └── lottie/
-├── App.jsx
-├── main.jsx
-└── index.css
-```
+## Key Sections
 
-## 🎯 Key Sections
-
-1. **Hero Section**: Eye-catching landing area with animated statistics
-2. **Features**: Why choose TechEdu with interactive cards
-3. **Courses**: Dynamic course showcase with tabs and pricing
-4. **Placements**: Success stories and hiring partner logos
-5. **Testimonials**: Interactive carousel with student reviews
-6. **Contact**: Comprehensive contact form with validation
+1. **Hero Section**: Eye-catching landing area with collapsible animated statistics on mobile
+2. **About**: Company story with expandable core values and impact metrics
+3. **Features**: Interactive feature cards with mobile-collapsible display
+4. **Courses**: Dynamic course showcase with swipeable mobile carousel and desktop grid
+5. **Placements**: Success stories and hiring partner logos
+6. **Contact**: Priority contact form with expandable contact details on mobile
 7. **Footer**: Complete site links and social media
 
-## 🔧 Customization
+## Customization
 
 ### Adding New Courses
 Edit the courses array in `src/components/sections/Courses.jsx`:
@@ -117,38 +97,20 @@ const courses = {
 }
 ```
 
-### Updating Contact Information
-Modify contact details in `src/components/sections/Contact.jsx` and `src/components/sections/Footer.jsx`.
-
-### Customizing Colors
-Update the Tailwind config in `tailwind.config.js`:
-
-```javascript
-theme: {
-  extend: {
-    colors: {
-      primary: {
-        // Your color palette
-      }
-    }
-  }
-}
-```
-
-## 📱 Responsive Breakpoints
+## Responsive Breakpoints
 
 - **Mobile**: < 768px
 - **Tablet**: 768px - 1024px
 - **Desktop**: > 1024px
 
-## ⚡ Performance Tips
+## Performance Tips
 
 - Images are optimized for web
 - Animations use CSS transforms for better performance
 - Components are loaded efficiently
 - Tailwind CSS is purged for production
 
-## 🚀 Deployment
+## Deployment
 
 ### Netlify
 1. Build the project: `npm run build`
@@ -163,24 +125,15 @@ theme: {
 1. Run `npm run build`
 2. Upload the `dist` folder to your web server
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
 ## 📄 License
 
 This project is licensed under the MIT License.
 
 ## 📞 Support
-
 For support and questions:
-- Email: info@techedu.com
-- Phone: +91-9876543210
-- Website: [WCC Labs](https://techedu.com)
+- Email: info@wcclabs.com
+- Phone: +91-9455966988
+- Website: [WCC Labs](https://wcclabs.com)
 
 ---
 

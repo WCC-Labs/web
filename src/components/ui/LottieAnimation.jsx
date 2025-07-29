@@ -1,5 +1,6 @@
 import React from 'react'
 import Lottie from 'lottie-react'
+import PropTypes from 'prop-types'
 
 const LottieAnimation = ({ animationData, className = "", ...props }) => {
   // Fallback animation data if none provided
@@ -73,6 +74,11 @@ const LottieAnimation = ({ animationData, className = "", ...props }) => {
       />
     </div>
   )
+}
+
+LottieAnimation.propTypes = {
+  animationData: PropTypes.object,
+  className: PropTypes.string
 }
 
 export default LottieAnimation

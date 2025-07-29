@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   HiAcademicCap, 
@@ -12,6 +12,9 @@ import {
 
 const Features = () => {
   const [selectedFeature, setSelectedFeature] = useState(null)
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
 
   const features = [
     {
@@ -94,6 +97,40 @@ const Features = () => {
     }
   ]
 
+  // Auto-collapse mobile modal after 30 seconds
+  useEffect(() => {
+    let timer
+    if (isMobileExpanded) {
+      timer = setTimeout(() => {
+        setIsMobileExpanded(false)
+      }, 30000)
+    }
+    return () => clearTimeout(timer)
+  }, [isMobileExpanded])
+
+  // Auto-scroll functionality with smooth infinite scroll
+  useEffect(() => {
+    if (!isHovered) {
+      const timer = setInterval(() => {
+        setCurrentIndex((prevIndex) => prevIndex + 1);
+      }, 4000) // Change every 4 seconds
+
+      return () => clearInterval(timer)
+    }
+  }, [isHovered])
+
+  // Handle seamless infinite scroll reset - no longer needed with simplified approach
+  useEffect(() => {
+    // When we've scrolled through all original features, smoothly reset
+    if (currentIndex >= features.length) {
+      const timer = setTimeout(() => {
+        setCurrentIndex(0);
+      }, 0); // Immediate reset since we have duplicate cards
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, features.length])
+
   const getColorClasses = (color) => {
     const colors = {
       blue: 'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white',
@@ -107,11 +144,11 @@ const Features = () => {
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="features" className="py-12 md:py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -139,60 +176,221 @@ const Features = () => {
         </motion.div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-primary-200"
-              initial={{ opacity: 0, y: 30 }}
+        
+        {/* Mobile Simple Card View */}
+        <div className="md:hidden mb-8">
+          <div className="grid gap-4">
+            {features.slice(0, 3).map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+              >
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    feature.color === 'blue' ? 'bg-blue-100 text-blue-600' :
+                    feature.color === 'yellow' ? 'bg-yellow-100 text-yellow-600' :
+                    feature.color === 'green' ? 'bg-green-100 text-green-600' :
+                    feature.color === 'purple' ? 'bg-purple-100 text-purple-600' :
+                    feature.color === 'red' ? 'bg-red-100 text-red-600' :
+                    'bg-indigo-100 text-indigo-600'
+                  }`}>
+                    <feature.icon className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 text-sm">{feature.title}</h4>
+                </div>
+                <p className="text-gray-600 text-xs leading-relaxed">{feature.description}</p>
+              </motion.div>
+            ))}
+            
+            {/* Show More Button */}
+            <motion.button
+              onClick={() => setIsMobileExpanded(true)}
+              className="bg-gradient-to-r from-primary-50 to-accent-50 rounded-xl p-4 flex items-center justify-center space-x-2 text-primary-700 font-medium text-sm border border-primary-100 hover:from-primary-100 hover:to-accent-100 transition-colors duration-200"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              whileHover={{ y: -5 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <motion.div
-                className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${getColorClasses(feature.color)}`}
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 400 }}
-              >
-                <feature.icon className="w-8 h-8 transition-colors duration-300" />
-              </motion.div>
+              <span>View All {features.length} Features</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.button>
+          </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">
-                {feature.title}
-              </h3>
-              
-              <p className="text-gray-600 leading-relaxed">
-                {feature.description}
-              </p>
-
-              {/* Hover Effect Arrow */}
+          {/* Full Features Modal */}
+          <AnimatePresence>
+            {isMobileExpanded && (
               <motion.div
-                className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={{ x: -10 }}
-                whileHover={{ x: 0 }}
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileExpanded(false)}
               >
-                <button 
-                  onClick={() => setSelectedFeature(feature)}
-                  className="text-primary-600 font-medium flex items-center hover:text-primary-700 transition-colors"
+                <motion.div
+                  className="bg-white rounded-t-2xl p-6 w-full max-h-[80vh] overflow-y-auto"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "100%" }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  Learn More 
-                  <motion.span
-                    className="ml-2"
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                  >
-                    →
-                  </motion.span>
-                </button>
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900">Why Choose WCC Labs?</h3>
+                    <button
+                      onClick={() => setIsMobileExpanded(false)}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <HiX className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+
+                  {/* Features List */}
+                  <div className="space-y-4">
+                    {features.map((feature, index) => (
+                      <motion.div
+                        key={feature.title}
+                        className="bg-gray-50 rounded-lg p-4"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1, duration: 0.3 }}
+                      >
+                        <div className="flex items-start space-x-3">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                            feature.color === 'blue' ? 'bg-blue-100 text-blue-600' :
+                            feature.color === 'yellow' ? 'bg-yellow-100 text-yellow-600' :
+                            feature.color === 'green' ? 'bg-green-100 text-green-600' :
+                            feature.color === 'purple' ? 'bg-purple-100 text-purple-600' :
+                            feature.color === 'red' ? 'bg-red-100 text-red-600' :
+                            'bg-indigo-100 text-indigo-600'
+                          }`}>
+                            <feature.icon className="w-4 h-4" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-900 text-sm mb-1">{feature.title}</h4>
+                            <p className="text-gray-600 text-xs leading-relaxed">{feature.description}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* CTA in Modal */}
+                  <div className="mt-6 pt-4 border-t border-gray-100">
+                    <motion.a
+                      href="#contact"
+                      className="btn btn-primary btn-sm w-full flex items-center justify-center"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsMobileExpanded(false)}
+                    >
+                      Get Started
+                    </motion.a>
+                  </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Call to Action */}
+        {/* Desktop Horizontal Scroll View */}
+        <div className="hidden md:block">
+          <div 
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <motion.div 
+              className="flex gap-8"
+              animate={{ x: -currentIndex * 320 }} // 320px = card width (288px) + gap (32px)
+              transition={{ 
+                duration: 0.8, 
+                ease: "easeInOut" 
+              }}
+            >
+              {/* Render features twice for infinite scroll effect */}
+              {[...features, ...features].map((feature, index) => (
+                <motion.div
+                  key={`${feature.title}-${index}`}
+                  className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-primary-200 flex-shrink-0 w-72"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: (index % features.length) * 0.1, duration: 0.6 }}
+                  whileHover={{ y: -5 }}
+                  onClick={() => setSelectedFeature(feature)}
+                >
+                  <motion.div
+                    className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${getColorClasses(feature.color)}`}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <feature.icon className="w-8 h-8 transition-colors duration-300" />
+                  </motion.div>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+
+                  {/* Hover Effect Arrow */}
+                  <motion.div
+                    className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    initial={{ x: -10 }}
+                    whileHover={{ x: 0 }}
+                  >
+                    <button 
+                      onClick={() => setSelectedFeature(feature)}
+                      className="text-primary-600 font-medium flex items-center hover:text-primary-700 transition-colors"
+                    >
+                      Learn More 
+                      <motion.span
+                        className="ml-2"
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ repeat: Infinity, duration: 1.5 }}
+                      >
+                        →
+                      </motion.span>
+                    </button>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+            
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setCurrentIndex((prev) => prev - 1)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-primary-600 transition-colors duration-300 hover:shadow-xl"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={() => setCurrentIndex((prev) => prev + 1)}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-primary-600 transition-colors duration-300 hover:shadow-xl"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Call to Action - Desktop Only */}
         <motion.div
-          className="text-center mt-16"
+          className="text-center mt-16 hidden md:block"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

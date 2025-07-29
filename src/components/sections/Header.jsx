@@ -16,9 +16,10 @@ const Header = () => {
 
   const navItems = [
     { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
     { name: 'Courses', href: '#courses' },
     { name: 'Placements', href: '#placements' },
-    { name: 'About', href: '#about' },
+    { name: 'Hire Talent', href: '#hire-talent' },
     { name: 'Contact', href: '#contact' }
   ]
 
@@ -41,10 +42,12 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400 }}
           >
-            <div className="w-10 h-10 bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">T</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">WCC Labs</span>
+            <img 
+              src="/wcc.png" 
+              alt="WCC Labs Logo" 
+              className="w-10 h-10"
+            />
+            <span className="text-xl font-bold text-gray-900">Labs</span>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -67,7 +70,7 @@ const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <motion.a
-              href="tel:+91-9876543210"
+              href="tel:+91-9455966988"
               className="btn btn-outline btn-md flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -85,9 +88,9 @@ const Header = () => {
             </motion.a>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Hidden */}
           <motion.button
-            className="md:hidden p-2"
+            className="md:hidden p-2 hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             whileTap={{ scale: 0.95 }}
           >
@@ -99,9 +102,9 @@ const Header = () => {
           </motion.button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Hidden */}
         <motion.div
-          className={`md:hidden overflow-hidden ${isMenuOpen ? 'max-h-96' : 'max-h-0'}`}
+          className={`md:hidden overflow-hidden hidden ${isMenuOpen ? 'max-h-96' : 'max-h-0'}`}
           animate={{ height: isMenuOpen ? 'auto' : 0 }}
           transition={{ duration: 0.3 }}
         >
@@ -120,7 +123,7 @@ const Header = () => {
               </motion.a>
             ))}
             <div className="pt-4 space-y-3">
-              <a href="tel:+91-9876543210" className="btn btn-outline btn-md w-full">
+              <a href="tel:+91-9455966988" className="btn btn-outline btn-md w-full">
                 Call Now
               </a>
               <a href="#contact" className="btn btn-primary btn-md w-full">

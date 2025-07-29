@@ -14,17 +14,8 @@ const Footer = () => {
     { name: 'About Us', href: '#about' },
     { name: 'Courses', href: '#courses' },
     { name: 'Placements', href: '#placements' },
-    { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Hire Talent', href: '#hire-talent' },
     { name: 'Contact', href: '#contact' }
-  ]
-
-  const courses = [
-    { name: 'MERN Stack Development', href: '#courses' },
-    { name: 'Data Science & ML', href: '#courses' },
-    { name: 'Java Full Stack', href: '#courses' },
-    { name: 'Digital Marketing', href: '#courses' },
-    { name: 'Cloud Computing', href: '#courses' },
-    { name: 'Cybersecurity', href: '#courses' }
   ]
 
   const socialLinks = [
@@ -46,20 +37,22 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white relative">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
-          {/* Company Info */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Company Info - Always Visible */}
           <motion.div
-            className="lg:col-span-1"
+            className="md:col-span-1"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">T</span>
-              </div>
-              <span className="text-xl font-bold">WCC Labs</span>
+              <img 
+                src="/wcc.png" 
+                alt="WCC Labs" 
+                className="w-10 h-10 rounded-lg object-contain"
+              />
+              <span className="text-xl font-bold">Labs</span>
             </div>
             
             <p className="text-gray-300 mb-6 leading-relaxed">
@@ -71,24 +64,25 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <HiPhone className="w-5 h-5 text-primary-400" />
-                <span className="text-gray-300">+91-9876543210</span>
+                <span className="text-gray-300">+91-9455966988</span>
               </div>
               <div className="flex items-center space-x-3">
                 <HiMail className="w-5 h-5 text-primary-400" />
-                <span className="text-gray-300">info@techedu.com</span>
+                <span className="text-gray-300">info@wcclabs.com</span>
               </div>
               <div className="flex items-start space-x-3">
                 <HiLocationMarker className="w-5 h-5 text-primary-400 mt-1" />
-                <span className="text-gray-300">
-                  WCC Labs, Sector 63,<br />
-                  Noida, UP 201301
-                </span>
+                <div className="text-gray-300">
+                  <div>• WCC Labs, Hinjawadi Phase II, Hinjawadi Rajiv Gandhi Infotech Park, Pune, MH-57</div>
+                  <div>• WCC Labs, Rammurthynagar, Bangalore, 560016</div>
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Quick Links */}
+          {/* Quick Links - Hidden on Mobile */}
           <motion.div
+            className="hidden md:block"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -117,42 +111,13 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Courses */}
+          {/* Newsletter & Social - Hidden on Mobile */}
           <motion.div
+            className="hidden md:block"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            <h3 className="text-lg font-semibold mb-6">Popular Courses</h3>
-            <ul className="space-y-3">
-              {courses.map((course, index) => (
-                <motion.li
-                  key={course.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.05, duration: 0.4 }}
-                >
-                  <a
-                    href={course.href}
-                    className="text-gray-300 hover:text-primary-400 transition-colors duration-300 flex items-center group"
-                  >
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">
-                      {course.name}
-                    </span>
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Newsletter & Social */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.6 }}
           >
             <h3 className="text-lg font-semibold mb-6">Stay Connected</h3>
             
